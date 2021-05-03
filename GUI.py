@@ -52,27 +52,27 @@ def delete_content():
     setTreeItems()
 
 window = Tk()  #c언어로 치면 다이얼 창
-window.title("Station Fare Management")
-window.geometry("600x600")
-window.resizable(0,0)
-title = "정류장 요금관리"
-lbl_title = Label(window,text=title, font = ("돋움체",20))
-lbl_title.pack(padx = 5, pady=15 ) 
+window.title("Station Fare Management") #다이얼로그창 이름
+window.geometry("600x600") # 다이얼로그 크기
+window.resizable(0,0) 
+title = "정류장 요금관리" #다이얼로그안에 쓰임
+lbl_title = Label(window,text=title, font = ("돋움체",20))#위치
+lbl_title.pack(padx = 5, pady=15 )
 
 #정류장 요금관리 표시 하는 treeStationfares
 treeStationfares= ttk.Treeview(window)
 treeStationfares["columns"]=("station","fare")
-treeStationfares.column("#0", width=50)
+treeStationfares.column("#0", width=50)#grid의 첫줄 길이
 treeStationfares.column("station", width=200)
 treeStationfares.column("fare", width=150)
 #treeStationfares에는 순번 ,정류장 , 요금표시
-treeStationfares.heading("#0", text="순번")
+treeStationfares.heading("#0", text="순번")#gird의 첫줄 네이밍
 treeStationfares.heading("station", text="정류장")
 treeStationfares.heading("fare", text="요금")
 treeStationfares.place(x=100,y=100,width=400,height=250) #.place 위치
 setTreeItems()
 #검색한 정류장 요금을 선택하면 stationfares_selected를 실행함
-treeStationfares.bind("<<TreeviewSelect>>",stationfares_selected)
+treeStationfares.bind("<<TreeviewSelect>>",stationfares_selected) #<TreeviewSelect> 트리 뷰가 클릭되었을때  stationfares_selected해당 함수 실행  위젯.bind(event, handler)
 #버튼 생성 ( 함수 설정 포함)
 btn_Insert= Button(window,text="Insert",command= insert_content, font=("돋움체",14))
 btn_Insert.place (x=100,y=400,width=100,height=30)
@@ -94,4 +94,4 @@ text_Fare.place(x=200,y=500)
 
 
 
-window.mainloop()
+window.mainloop()#mainloop가 있어야 실행됨
