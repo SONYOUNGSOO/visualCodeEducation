@@ -1,15 +1,13 @@
 # pip install pylint 를 통해 파이썬 오류 표시줄을 업데이트 할수있다.
 from tkinter import Tk, ttk, Label, Button, Text, END
+import json
 
-
-stationfares = [
-    {"station": "청량리", "fare": 1000},
-    {"station": "성북", "fare": 1100},
-    {"station": "의정부", "fare": 1200},
-    {"station": "소요산", "fare": 1300}
-]
-
-
+stationfares = []
+#with open('stationfares.json','r') as stationfares_file:
+#init load 부분에서 에러가 발생 , json 의 로드를 하지 못하는 상황이었음
+#encoding= 'UTF-8' 값을 추가 함으로써 현상이 해결됨 한글
+with open('stationfares.json','r',encoding= 'UTF-8') as stationfares_file:
+        stationfares = json.load(stationfares_file)
 selected_index = 0
 
 
@@ -40,7 +38,7 @@ def setTreeItems():
 def insert_content():
     station = text_Station.get("1.0", END)  # get 가져오는 함수
     fare = int(text_Fare.get("1.0", END))
-    stationfare = {'station': station, 'fare': fare}
+    stationfare = {'station': station.rstrip(), 'fare': fare} #.rstrip()\n같은 문자 제거
     stationfares.append(stationfare)
     setTreeItems()
 
@@ -50,7 +48,7 @@ def update_content():
     station = text_Station.get("1.0", END)  # get 가져오는 함수
     fare = int(text_Fare.get("1.0", END))
     selectedItem = stationfares[selected_index]
-    selectedItem['station'] = station
+    selectedItem['station'] = station.rstrip()
     selectedItem['fare'] = fare
     setTreeItems()
 
@@ -60,6 +58,12 @@ def delete_content():
     stationfares.pop(selected_index)
     setTreeItems()
 
+def save_content():
+    #한글을 써야 하기 때문에 encoding = 'UTF-8' 을 써야합니다.
+    with open('stationfares.json','w', encoding= 'UTF-8' ) as f:
+        jsonString = json.dumps(stationfares, ensure_ascii=False)
+        f.write(jsonString)
+    f.close
 
 window = Tk()  # c언어로 치면 다이얼 창
 window.title("Station Fare Management")  # 다이얼로그창 이름
@@ -91,11 +95,15 @@ btn_Insert.place(x=100, y=400, width=100, height=30)
 
 btn_Update = Button(window, text="Update",
                     command=update_content, font=("돋움체", 14))
-btn_Update.place(x=250, y=400, width=100, height=30)
+btn_Update.place(x=200, y=400, width=100, height=30)
 
 btn_Delete = Button(window, text="Delete",
                     command=delete_content, font=("돋움체", 14))
-btn_Delete.place(x=400, y=400, width=100, height=30)
+btn_Delete.place(x=300, y=400, width=100, height=30)
+
+btn_Save = Button(window, text="Save",
+                    command=save_content, font=("돋움체", 14))
+btn_Save.place(x=400, y=400, width=100, height=30)
 
 labelStation = Label(window, text="정류장")
 labelStation.place(x=100, y=450, width=50, height=25)
